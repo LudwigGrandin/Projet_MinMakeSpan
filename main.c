@@ -2,11 +2,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-/*
-struct valeurUtilisateur
-{
-
-}valeurUtilisateur;*/
 
 /**  PROTOTYPES  **/
 void menuUtilisateur(int *choix, int *m, int *n,int *nbK, int *borneInferieurMoyenne, int *borneInferieurMax);
@@ -30,6 +25,7 @@ int main()
     int D[302500]={0}, M[1000]={0};//, k[n];
  //   for(y=0;y<nbval;y++)
  //   {
+ /**DEBUT DE L'ALGORITHME**/
     menuUtilisateur(&choix,&m,&n,&nbK,&borneInferieurMoyenne,&borneInferieurMax);
 
 
@@ -81,7 +77,7 @@ int main()
 
     //Affichage final
     printf("BorneInferieurMax : %d\n", borneInferieurMax);
-    printf("BorneInferieurMoyenne : %d\n",borneInferieurMoyenne);*/
+    printf("BorneInferieurMoyenne : %d\n",borneInferieurMoyenne);
     printf("Resultat LSA : %.0f\n",resultatLSA);
     printf("maxb : %f\n",maxb);
     printf("Ratio LSA : %.2f\n",ratioLSA);
@@ -93,7 +89,7 @@ int main()
     return 0;
 }
 
-
+/**DEBUT FONCTIONS**/
 
 //Procédure menuUtilisateur
 void menuUtilisateur(int *choix, int *m, int *n,int *nbK, int *borneInferieurMoyenne, int *borneInferieurMax)
