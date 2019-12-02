@@ -23,18 +23,19 @@ int main()
     int tabval[27]={2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100,150,200,250,300,350,400,450,500,550}, nbval=27;
     int i, y;
     int D[302500]={0}, M[1000]={0};//, k[n];
- //   for(y=0;y<nbval;y++)
- //   {
+    //Boucle pour avoir toutes les valeurs de tabVal
+   for(y=0;y<nbval;y++)
+    {
  /**DEBUT DE L'ALGORITHME**/
-    menuUtilisateur(&choix,&m,&n,&nbK,&borneInferieurMoyenne,&borneInferieurMax);
+    //menuUtilisateur(&choix,&m,&n,&nbK,&borneInferieurMoyenne,&borneInferieurMax);
 
 
-//    m=tabval[y];
+        m=tabval[y];
 
     //printf("\n\n les valeurs sont les suivantes :\nm = %d\nn = %d, k = %d\n borneInferieurMoyenne = %d\ borneInferieurMax = %d\n",m,n,k,borneInferieurMoyenne,borneInferieurMax);
 
 
-        choix =2;
+        choix =1;
 
 //selon le choix de l'utilisation on ne générera pas la même instance
     if(choix == 1)
@@ -49,12 +50,11 @@ int main()
     resultatLSA = LSA(m,n,D,M,&borneInferieurMoyenne);
     //calculBorne(M, m, &borneInferieurMax, &borneInferieurMoyenne);
     borneInfMaxLSA=resultatLSA;
-    //for(i = 0; i<1000; i++)
-    //{M[i] = 0;}
+    for(i = 0; i<1000; i++)
+    {M[i] = 0;}
 
     resultatLTP=LTP(m,n,D,M,&borneInferieurMoyenne);
     //BorneInfMax = Durée la plus grande
-    //calculBorne(M, m, &borneInferieurMax, &borneInferieurMoyenne);
     borneInfMaxLTP=resultatLTP;
 
     //Calcul Borne Inf Max
@@ -72,9 +72,6 @@ int main()
     ratioLSA = resultatLSA / maxb;
     ratioLTP = resultatLTP / maxb;
 
-    /*printf("y = %d", y);
-    printf("m = %d\n", m);*/
-
     //Affichage final
     printf("BorneInferieurMax : %d\n", borneInferieurMax);
     printf("BorneInferieurMoyenne : %d\n",borneInferieurMoyenne);
@@ -84,7 +81,7 @@ int main()
     printf("Resultat LTP : %.0f\n", resultatLTP);
     printf("Ratio LTP : %.2f\n\n", ratioLTP);
 
- //}
+ }
 
     return 0;
 }
