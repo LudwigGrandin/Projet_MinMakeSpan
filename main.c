@@ -32,11 +32,12 @@ int main()
 for(i = 0; i<1000; i++)
     {M[i] = 0;}
         m=tabval[y];
+
         printf("m=%d\n",m);
     //printf("\n\n les valeurs sont les suivantes :\nm = %d\nn = %d, k = %d\n borneInferieurMoyenne = %d\ borneInferieurMax = %d\n",m,n,k,borneInferieurMoyenne,borneInferieurMax);
 
 
-        choix =2;
+        choix =1;
 
 //selon le choix de l'utilisation on ne générera pas la même instance
     if(choix == 1)
@@ -194,7 +195,7 @@ int LSA(int m, int n, int *D, int *M,int *borneInferieurMoyenne)
     int i=0,y=0,z=0,machinex=0,tempsMin=0, numMachineSauv=0;
     int tempsTotal=0;
     *borneInferieurMoyenne = 0;
-    tempsMin=m+m-1;
+    tempsMin=m+m+1;
     for(i=0 ; i<n ; i++)
     {
         //Durée de la tâche la plus longue. Temps Min car c'est cette variable va stocké le temps de la machine qui a fini la première et qui a donc le temps minimum à l'intant t
@@ -204,12 +205,13 @@ int LSA(int m, int n, int *D, int *M,int *borneInferieurMoyenne)
         {
             //Si on a une machine qui à un temps plus petit que les autres alors c'est cette machine là que l'on sélectionne
             machinex = M[y];
+
             if(M[y] < tempsMin)
             {
                 z = D[i];
                 machinex = M[y];
                 //Dans ces cas là, tempsMin est égal au temps minimum existant pour toutes les machines
-                tempsMin = M[y]+D[i];
+                tempsMin = M[y]+1;
                 //On sauvegarde le numéro de machine afin de pouvoir ajouter la durée à celle-ci
                 numMachineSauv = y;
                 //y = m pour finir la boucle for avant d'arriver à la fin des machines
@@ -218,7 +220,7 @@ int LSA(int m, int n, int *D, int *M,int *borneInferieurMoyenne)
             }
             else if(y == m-1)
             {
-                tempsMin=m+m-1;
+                tempsMin+= 2*tempsMin;
                 y =0;
             }
             else
