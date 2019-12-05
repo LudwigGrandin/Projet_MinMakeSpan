@@ -29,13 +29,14 @@ int main()
  /**DEBUT DE L'ALGORITHME**/
     //menuUtilisateur(&choix,&m,&n,&nbK,&borneInferieurMoyenne,&borneInferieurMax);
 
-
+for(i = 0; i<1000; i++)
+    {M[i] = 0;}
         m=tabval[y];
-
+        printf("m=%d\n",m);
     //printf("\n\n les valeurs sont les suivantes :\nm = %d\nn = %d, k = %d\n borneInferieurMoyenne = %d\ borneInferieurMax = %d\n",m,n,k,borneInferieurMoyenne,borneInferieurMax);
 
 
-        choix =1;
+        choix =2;
 
 //selon le choix de l'utilisation on ne générera pas la même instance
     if(choix == 1)
@@ -73,6 +74,7 @@ int main()
     ratioLTP = resultatLTP / maxb;
 
     //Affichage final
+
     printf("BorneInferieurMax : %d\n", borneInferieurMax);
     printf("BorneInferieurMoyenne : %d\n",borneInferieurMoyenne);
     printf("Resultat LSA : %.0f\n",resultatLSA);
@@ -136,6 +138,7 @@ void generationIm(int m, int *n,int *D)
     {
         D[i] = 1;
     }
+    tailleBoucle = m;
     D[i] = m;
 }
 
@@ -188,33 +191,46 @@ void generationIpM(int m, int *n,int *D)
 
 int LSA(int m, int n, int *D, int *M,int *borneInferieurMoyenne)
 {
-    int i=0,y=0,tempsMin=0, numMachineSauv=0;
+    int i=0,y=0,z=0,machinex=0,tempsMin=0, numMachineSauv=0;
     int tempsTotal=0;
     *borneInferieurMoyenne = 0;
-
+    tempsMin=m+m-1;
     for(i=0 ; i<n ; i++)
     {
         //Durée de la tâche la plus longue. Temps Min car c'est cette variable va stocké le temps de la machine qui a fini la première et qui a donc le temps minimum à l'intant t
-        tempsMin=m+m-1;
+
         //On regarde la première machine disponible
         for(y=0 ; y<m ;y++)
         {
             //Si on a une machine qui à un temps plus petit que les autres alors c'est cette machine là que l'on sélectionne
+            machinex = M[y];
             if(M[y] < tempsMin)
             {
+                z = D[i];
+                machinex = M[y];
                 //Dans ces cas là, tempsMin est égal au temps minimum existant pour toutes les machines
-                tempsMin = M[y];
+                tempsMin = M[y]+D[i];
                 //On sauvegarde le numéro de machine afin de pouvoir ajouter la durée à celle-ci
                 numMachineSauv = y;
                 //y = m pour finir la boucle for avant d'arriver à la fin des machines
                 //En effet, si l'on a trouvé une machine qui a fini, c'est celle qu'on selectionnera forcement
                 y = m;
             }
+            else if(y == m-1)
+            {
+                tempsMin=m+m-1;
+                y =0;
+            }
+            else
+            {}
         }
         //On fait ici la somme des durées  dans borneInférieurMoyenne pour pour calculer la moyenne de l'échantillon
         *borneInferieurMoyenne += D[i];
         //Notre machine obtien la durée de la tâche
+
+        z = D[i];
         M[numMachineSauv] += D[i];
+        machinex = M[numMachineSauv];
         //Si jamais cette machine à le temps le plus grand de toute les machines alors temps total sera égal au temps de cette machine
         if(M[numMachineSauv] > tempsTotal)
         {
