@@ -17,7 +17,7 @@ void initM(int *M, int n);
 int main()
 {
     /**     DEFINITION DES VARIABLES        **/
-    //srand(time(NULL));
+    srand(time(NULL));
     int continuer = 0, choix = 0;
     //m = nbMachine , n = nombre de tâches
     int m=0,n=0,borneInferieurMoyenne=0,borneInferieurMax=0, nbK = 0, min = 0 , max = 0;
@@ -75,23 +75,6 @@ do
         default:
             break;
 
-    }
-
-    if(choix == 3)
-    {
-        K = rand()/(RAND_MAX+1.0);
-            if(K == 0)
-            {
-
-                printf("K = %d\n",K);
-                printf("Instance Im : \n");
-            }
-            else
-            {
-
-                printf("K = %d\n",K);
-                printf("Instance IpM : \n");
-            }
     }
 
 
@@ -229,8 +212,6 @@ void generationIR(int *D, int n, int min,int max)
 {
     int i;
 
-
-
     for(i=0; i<n; i++)
     {
         D[i] = rand()%(max-min) + min;
@@ -256,8 +237,6 @@ int LSA(int m, int n, int *D, int *M,int *borneInferieurMoyenne)
 
             if(M[y] < tempsMin)
             {
-                z = D[i];
-                machinex = M[y];
                 //Dans ces cas là, tempsMin est égal au temps minimum existant pour toutes les machines
                 tempsMin = M[y]+1;
                 //On sauvegarde le numéro de machine afin de pouvoir ajouter la durée à celle-ci
