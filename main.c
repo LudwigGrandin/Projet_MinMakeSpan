@@ -3,6 +3,8 @@
 #include <math.h>
 #include <time.h>
 
+/** Programme fait Par LUDWIG GRANDIN et BLANDINE DUCLOS **/
+
 
 /**  PROTOTYPES  **/
 void menuUtilisateur(int *choix, int *m, int *n,int *nbK, int *borneInferieurMoyenne, int *borneInferieurMax);
