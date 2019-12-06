@@ -46,7 +46,6 @@ do
 
     initM(M,m);
 
-    printf("m=%d\n",m);
 
 
 
