@@ -1,70 +1,114 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
 
 /**  PROTOTYPES  **/
 void menuUtilisateur(int *choix, int *m, int *n,int *nbK, int *borneInferieurMoyenne, int *borneInferieurMax);
 void generationIm(int m, int *n,int *D);
 void generationIpM(int m, int *n,int *D);
+void generationIR(int *D, int n, int min,int max);
 int LSA(int m, int n, int *D, int *M,int *borneInferieurMoyenne);
 int LTP(int m, int n, int *D, int *M,int *borneInferieurMoyenne);
+void initM(int *M, int n);
 //void calculBorne(int *M, int m, int *borneInferieurMax, int *borneInferieurMoyenne);
 
 int main()
 {
     /**     DEFINITION DES VARIABLES        **/
+    //srand(time(NULL));
     int continuer = 0, choix = 0;
-    int m=0,n=0,borneInferieurMoyenne=0,borneInferieurMax=0, nbK = 0;
-    int borneInfMaxLSA=0,borneInfMaxLTP=0;
+    //m = nbMachine , n = nombre de tâches
+    int m=0,n=0,borneInferieurMoyenne=0,borneInferieurMax=0, nbK = 0, min = 0 , max = 0;
+    int K = 0;
+    float borneInfMaxLSA=0,borneInfMaxLTP=0;
     int tempsTotal;
     float maxb=0, resultatLSA=0 , resultatLTP=0;
     float ratioLSA=0, ratioLTP=0;
     int tabval[27]={2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100,150,200,250,300,350,400,450,500,550}, nbval=27;
-    int i, y;
-    int D[302500]={0}, M[1000]={0};//, k[n];
+    int i=0, y=0;
+    int nMax;
+    int D[302500]={0}, M[1000]={0};
+
+
+
     //Boucle pour avoir toutes les valeurs de tabVal
-   for(y=0;y<nbval;y++)
-    {
+
  /**DEBUT DE L'ALGORITHME**/
-    //menuUtilisateur(&choix,&m,&n,&nbK,&borneInferieurMoyenne,&borneInferieurMax);
+do
+{
 
-for(i = 0; i<1000; i++)
-    {M[i] = 0;}
-        m=tabval[y];
+    if(choix == 0)
+    {
+        menuUtilisateur(&choix,&m,&n,&nbK,&min,&max);
+    }
+    else{}
 
-        printf("m=%d\n",m);
+    /*nMax = m*m+1;
+    int D[nMax], M[n];*/
+
+ for(y=0;y<nbval;y++)
+    {
+
+
+    initM(M,n);
+    //m=tabval[y];
+
+    printf("m=%d\n",m);
     //printf("\n\n les valeurs sont les suivantes :\nm = %d\nn = %d, k = %d\n borneInferieurMoyenne = %d\ borneInferieurMax = %d\n",m,n,k,borneInferieurMoyenne,borneInferieurMax);
 
 
-        choix =1;
-
 //selon le choix de l'utilisation on ne générera pas la même instance
-    if(choix == 1)
+
+    switch(choix)
     {
-        generationIm(m,&n,D);
+        case 1 :
+            generationIm(m,&n,D);
+            break;
+        case 2 :
+            generationIpM(m,&n,D);
+            break;
+        case 3 :
+            generationIR(D,n,min,max);
+            break;
+        default:
+            break;
+
     }
-    else
+
+    if(choix == 3)
     {
-        generationIpM(m,&n,D);
+        K = rand()/(RAND_MAX+1.0);
+            if(K == 0)
+            {
+
+                printf("K = %d\n",K);
+                printf("Instance Im : \n");
+            }
+            else
+            {
+
+                printf("K = %d\n",K);
+                printf("Instance IpM : \n");
+            }
     }
+
 
     resultatLSA = LSA(m,n,D,M,&borneInferieurMoyenne);
-    //calculBorne(M, m, &borneInferieurMax, &borneInferieurMoyenne);
     borneInfMaxLSA=resultatLSA;
-    for(i = 0; i<1000; i++)
-    {M[i] = 0;}
-
+    initM(M,n);
     resultatLTP=LTP(m,n,D,M,&borneInferieurMoyenne);
     //BorneInfMax = Durée la plus grande
     borneInfMaxLTP=resultatLTP;
-
     //Calcul Borne Inf Max
-
     if(borneInfMaxLSA>=borneInfMaxLTP)
     {borneInferieurMax = borneInfMaxLSA;}
     else
     {borneInferieurMax = borneInfMaxLTP;}
+
+
+
 
     //Calcul MaxB
     if(borneInferieurMax >= borneInferieurMoyenne)
@@ -83,8 +127,20 @@ for(i = 0; i<1000; i++)
     printf("Ratio LSA : %.2f\n",ratioLSA);
     printf("Resultat LTP : %.0f\n", resultatLTP);
     printf("Ratio LTP : %.2f\n\n", ratioLTP);
+    }
+    if(nbK != 0)
+    {
+        nbK --;
+        continuer = 1;
+    }
+    else
+    {
+        choix = 0;
+        printf("Souhaitez vous continuer ?  1 : oui ; 0 : non : ");
+        scanf("%d", &continuer);
+    }
 
- }
+}while(continuer == 1);
 
     return 0;
 }
@@ -92,7 +148,7 @@ for(i = 0; i<1000; i++)
 /**DEBUT FONCTIONS**/
 
 //Procédure menuUtilisateur
-void menuUtilisateur(int *choix, int *m, int *n,int *nbK, int *borneInferieurMoyenne, int *borneInferieurMax)
+void menuUtilisateur(int *choix, int *m, int *n,int *nbK, int *min, int *max)
 {
     printf("Choisissez ce que vous voulez faire : \n - 1 : Generation d une instance de type Im\n - 2 : Generation d une instance IprimeM\n - 3 : Generation d instances multiples\n\nVotre choix : ");
     scanf("%d", choix);
@@ -111,21 +167,21 @@ void menuUtilisateur(int *choix, int *m, int *n,int *nbK, int *borneInferieurMoy
             case 3 ://Génération des instances aléatoires
                 printf("Saisissez le nombre de machine m : ");
                 scanf("%d", m);
-                printf("Saisissez le nombre de tâches n : ");
+                printf("Saisissez le nombre de taches n : ");
                 scanf("%d", n);
                 printf("Saisissez le nombre de d'instance k :");
                 scanf("%d", nbK);
                 //Mettre sécurité en fonction des contraintes
-                printf("Saisissez la durée borneInferieurMoyenneimum des tâches :");
-                scanf("%d", borneInferieurMoyenne);
-                printf("Saisissez la durée borneInferieurMaximum des tâches :");
-                scanf("%d", borneInferieurMax);
+                printf("Saisissez la duree minimum des taches :");
+                scanf("%d", min);
+                printf("Saisissez la duree maximum des taches :");
+                scanf("%d", max);
 
                 break;
             default:
                 break;
         }
-    }while( (*m > 0) && (*n > 0) && (*nbK > 0) && (*borneInferieurMoyenne >= 0) && (*borneInferieurMoyenne < *borneInferieurMax) && (*borneInferieurMax > *borneInferieurMoyenne) );
+    }while( !(*m > 0) && !(*n > 0) && !(*nbK > 0) && !(*max > 0) && !(*min < *max) );
 }
 
 void generationIm(int m, int *n,int *D)
@@ -169,26 +225,17 @@ void generationIpM(int m, int *n,int *D)
     }
 }
 
-/*void generationIR(int m, int *n, int nbK, int borneInferieurMoyenne, int borneInferieurMax, int *D)
+void generationIR(int *D, int n, int min,int max)
 {
-    int nbAlea,i;
-    int a=0, b=1;//a valeur borneInferieurMoyenne aléatoire et b valeur borneInferieurMax aléatoire
+    int i;
 
-    nbAlea = rand()%(b-a) + a;
 
-    for(i=0; i<nbK; i++)
+
+    for(i=0; i<n; i++)
     {
-       if(nbAlea == 0)//Génère Im
-       {
-
-       }
-       else//Génère IpM
-       {
-
-       }
+        D[i] = rand()%(max-min) + min;
     }
-
-}*/
+}
 
 int LSA(int m, int n, int *D, int *M,int *borneInferieurMoyenne)
 {
@@ -196,6 +243,7 @@ int LSA(int m, int n, int *D, int *M,int *borneInferieurMoyenne)
     int tempsTotal=0;
     *borneInferieurMoyenne = 0;
     tempsMin=m+m+1;
+
     for(i=0 ; i<n ; i++)
     {
         //Durée de la tâche la plus longue. Temps Min car c'est cette variable va stocké le temps de la machine qui a fini la première et qui a donc le temps minimum à l'intant t
@@ -270,7 +318,30 @@ int LTP(int m, int n, int *D, int *M,int *borneInferieurMoyenne)
     return tempsMax;
 }
 
+
+
 void calculRatio()
 {
 
 }
+
+void initM(int *M,int n)
+{
+    int i = 0;
+
+    for(i = 0; i<n; i++)
+    {M[i] = 0;}
+}
+
+
+/*
+void AffichageFinal(int borneInferieurMax,int borneInferieurMoyenne, int resultatLSA, int maxb, float)
+{
+    printf("BorneInferieurMax : %d\n", borneInferieurMax);
+    printf("BorneInferieurMoyenne : %d\n",borneInferieurMoyenne);
+    printf("Resultat LSA : %.0f\n",resultatLSA);
+    printf("maxb : %f\n",maxb);
+    printf("Ratio LSA : %.2f\n",ratioLSA);
+    printf("Resultat LTP : %.0f\n", resultatLTP);
+    printf("Ratio LTP : %.2f\n\n", ratioLTP);
+}*/
